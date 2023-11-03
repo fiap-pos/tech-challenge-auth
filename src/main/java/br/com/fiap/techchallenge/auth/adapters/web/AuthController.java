@@ -39,7 +39,7 @@ public class AuthController {
     }
 
     @GetMapping("/info")
-    @Operation(summary = "Retorna as informações do usuário logado")
+    @Operation(summary = "Retorna as informações do usuário logado se o token for válido")
     @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<UserResponse> authenticate(@Parameter(hidden = true) @RequestHeader(name = "Authorization") String token) {
         var userDTO = authInputPort.getUserByToken(token);
