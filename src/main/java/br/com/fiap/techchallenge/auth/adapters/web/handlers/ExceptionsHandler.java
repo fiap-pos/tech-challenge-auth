@@ -83,7 +83,7 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(AuthenticationTokenInvalidException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<ErrorDetails> handlerAuthenticationTokenInvalidException(EntityNotFoundException e, HttpServletRequest request) {
+    public ResponseEntity<ErrorDetails> handlerAuthenticationTokenInvalidException(AuthenticationTokenInvalidException e, HttpServletRequest request) {
         var errorDetails = new ErrorDetails.Builder()
                 .status(HttpStatus.UNAUTHORIZED.value())
                 .message(e.getMessage())

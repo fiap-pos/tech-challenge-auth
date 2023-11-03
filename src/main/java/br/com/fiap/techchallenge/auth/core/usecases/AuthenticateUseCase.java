@@ -38,7 +38,10 @@ public class AuthenticateUseCase implements AuthInputPort {
 
     @Override
     public UserDTO getUserByToken(String token) {
-        var id = authToken.getUserId(token);
-        return getUserOutputPort.getById(id);
+        var userDTO = authToken.getUser(token);
+        if (userDTO.id() != null) {
+            return getUserOutputPort.getById(userDTO.id());
+        }
+        return userDTO;
     }
 }

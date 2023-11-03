@@ -4,13 +4,15 @@ import br.com.fiap.techchallenge.auth.core.domain.entities.enums.TokenType;
 import br.com.fiap.techchallenge.auth.core.domain.entities.enums.UserRole;
 import br.com.fiap.techchallenge.auth.core.domain.exceptions.AuthenticationTokenInvalidException;
 import br.com.fiap.techchallenge.auth.core.dtos.AuthTokenDTO;
+import br.com.fiap.techchallenge.auth.core.dtos.UserDTO;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
+import java.time.ZonedDateTime;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,22 +64,44 @@ public class AuthToken {
         );
     }
 
-    public String getUserId(String token) {
+    public UserDTO getUser(String token) {
         try {
             var verifier = JWT.require(getAlgorithm())
                     .withIssuer(ISSUER)
                     .build();
             var decodedJWT = verifier.verify(token.replace("Bearer ", ""));
-            return decodedJWT.getClaim("id").asString();
+            return buildUserDTOFromJWT(decodedJWT);
         } catch (JWTVerificationException exception){
-            throw new AuthenticationTokenInvalidException("Authorization token is inválid", exception);
+            throw new AuthenticationTokenInvalidException("Authorization token is inválid: " + exception.getMessage(), exception);
         }
     }
 
-    private Instant getCurrentDate() {
-        long timeInSeconds = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
-        return Instant.ofEpochSecond(timeInSeconds);
+    private UserDTO buildUserDTOFromJWT(DecodedJWT jwt) {
+        var roles = jwt.getClaim("roles")
+                .asList(String.class)
+                .stream()
+                .map(UserRole::valueOf)
+                .toList();
 
+        return new UserDTO(
+                getUserId(jwt),
+                null,
+                null,
+                null,
+                roles
+        );
+    }
+
+    private String getUserId(DecodedJWT jtw) {
+        var claims = jtw.getClaims();
+        if (claims.containsKey("id") && claims.get("id") != null) {
+            return claims.get("id").asString();
+        }
+        return null;
+    }
+
+    private Instant getCurrentDate() {
+        return ZonedDateTime.now(ZoneId.of("UTC")).toInstant();
     }
 
     private Algorithm getAlgorithm() {
