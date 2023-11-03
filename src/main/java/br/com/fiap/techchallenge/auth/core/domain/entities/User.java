@@ -27,6 +27,14 @@ public class User {
         this.roles = roles;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public List<UserRole> getRoles() {
+        return roles;
+    }
+
     public String getName() {
         return name;
     }
