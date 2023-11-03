@@ -24,7 +24,7 @@ public class CustomerController {
         this.createCustomerUserInputPort = createCustomerUserInputPort;
     }
 
-    @PostMapping("/")
+    @PostMapping
     @Operation(summary = "Cria um novo usuário do tipo customer")
     public ResponseEntity<UserResponse> create(@Valid @RequestBody CreateCustomerRequest request) {
 
