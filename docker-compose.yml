@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  mongo:
+    image: mongo:6.0.11
+    container_name: tech-challenge-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
+  app:
+    image: vwnunes/tech-challenge-61-auth:latest
+    container_name: tech-challenge-auth-app
+    restart: on-failure
+    environment:
+      SERVER_PORT: 8081
+      # AUTH_SECRET: 'secret to generate and verify jwt tokens'
+      MONGODB_DATABASE: tech_challenge_auth
+      MONGODB_USERNAME: root
+      MONGODB_PASSWORD: root
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+    ports:
+      - "8081:8081"
