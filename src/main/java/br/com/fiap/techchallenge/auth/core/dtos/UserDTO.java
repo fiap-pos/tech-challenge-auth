@@ -8,4 +8,5 @@ public record UserDTO(String id, String name, String username, String email, Lis
     public UserDTO( String name, String username, String email, List<UserRole> roles) {
         this(null, name, username, email, roles);
     }
+
 }

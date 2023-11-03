@@ -1,21 +1,42 @@
 package br.com.fiap.techchallenge.auth.adapters.web.models.responses;
 
+import br.com.fiap.techchallenge.auth.core.dtos.AuthTokenDTO;
+
 public class TokenResponse {
 
     private String type;
 
-    private String payload;
+    private String accessToken;
 
-    public TokenResponse(String type, String payload) {
-        this.type = type;
-        this.payload = payload;
+    private Long expiresIn;
+
+    public TokenResponse(AuthTokenDTO authTokenDTO) {
+        this.type = authTokenDTO.tokenType().name().toLowerCase();
+        this.accessToken = authTokenDTO.accessToken();
+        this.expiresIn = authTokenDTO.expiresIn();
     }
 
     public String getType() {
         return type;
     }
 
-    public String getPayload() {
-        return payload;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public Long getExpiresIn() {
+        return expiresIn;
+    }
+
+    public void setExpiresIn(Long expiresIn) {
+        this.expiresIn = expiresIn;
     }
 }
