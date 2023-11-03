@@ -1,15 +1,18 @@
 package br.com.fiap.techchallenge.auth.adapters.repository;
 
 import br.com.fiap.techchallenge.auth.adapters.repository.mappers.UserMapper;
+import br.com.fiap.techchallenge.auth.adapters.repository.models.User;
 import br.com.fiap.techchallenge.auth.adapters.repository.mongo.UserMongoRepository;
 import br.com.fiap.techchallenge.auth.core.domain.exceptions.EntityNotFoundException;
+import br.com.fiap.techchallenge.auth.core.dtos.UpdateUserDTO;
 import br.com.fiap.techchallenge.auth.core.dtos.UserDTO;
 import br.com.fiap.techchallenge.auth.core.ports.out.CreateUserOutputPort;
 import br.com.fiap.techchallenge.auth.core.ports.out.GetUserOutputPort;
+import br.com.fiap.techchallenge.auth.core.ports.out.UpdateUserOutputPort;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepository implements CreateUserOutputPort, GetUserOutputPort {
+public class UserRepository implements CreateUserOutputPort, GetUserOutputPort, UpdateUserOutputPort {
 
     private UserMongoRepository userMongoRepository;
 
@@ -28,7 +31,7 @@ public class UserRepository implements CreateUserOutputPort, GetUserOutputPort {
 
     @Override
     public UserDTO getById(String id) {
-        var user = userMongoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuário com id "+id+" não encontrado."));
+        var user = findById(id);
         return userMapper.toUserDTO(user);
     }
 
@@ -37,5 +40,21 @@ public class UserRepository implements CreateUserOutputPort, GetUserOutputPort {
         var user = userMongoRepository.findByUsername(username).orElseThrow(
                 () -> new EntityNotFoundException("Usuário com username "+username+" não encontrado."));
         return userMapper.toUserDTO(user);
+    }
+
+    @Override
+    public UserDTO update(String id, UpdateUserDTO userDTO) {
+        var user = findById(id);
+
+        user.setName(userDTO.name());
+        user.setEmail(userDTO.email());
+
+        var updatedUser = userMongoRepository.save(user);
+
+        return userMapper.toUserDTO(updatedUser);
+    }
+
+    private User findById(String id) {
+        return userMongoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuário com id "+id+" não encontrado."));
     }
 }
