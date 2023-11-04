@@ -17,9 +17,8 @@ services:
       SERVER_PORT: 8081
       # AUTH_SECRET: 'secret to generate and verify jwt tokens'
       MONGODB_DATABASE: tech_challenge_auth
-      MONGODB_USERNAME: root
-      MONGODB_PASSWORD: root
-      MONGODB_HOST: mongo
-      MONGODB_PORT: 27017
+      MONGODB_URI: mongodb://root:root@mongo:27017
     ports:
       - "8081:8081"
+    depends_on:
+      - mongo
