@@ -2,6 +2,7 @@ package br.com.fiap.techchallenge.auth.core.usecases;
 
 import br.com.fiap.techchallenge.auth.core.domain.entities.AuthToken;
 import br.com.fiap.techchallenge.auth.core.domain.entities.User;
+import br.com.fiap.techchallenge.auth.core.domain.entities.enums.UserRole;
 import br.com.fiap.techchallenge.auth.core.dtos.AuthCustomerDTO;
 import br.com.fiap.techchallenge.auth.core.dtos.AuthTokenDTO;
 import br.com.fiap.techchallenge.auth.core.dtos.UserDTO;
@@ -39,7 +40,7 @@ public class AuthenticateUseCase implements AuthInputPort {
     @Override
     public UserDTO getUserByToken(String token) {
         var userDTO = authToken.getUser(token);
-        if (userDTO.id() != null) {
+        if (!userDTO.roles().contains(UserRole.GUEST)) {
             return getUserOutputPort.getById(userDTO.id());
         }
         return userDTO;
