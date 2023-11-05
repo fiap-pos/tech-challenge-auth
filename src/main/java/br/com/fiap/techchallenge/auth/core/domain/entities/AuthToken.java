@@ -16,12 +16,14 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class AuthToken {
 
     private static final String ISSUER = "Tech Challenge Auth";
     private static final Long TOKEN_DURATION_MINUTES = 30L;
+
     private final String secret;
 
     public AuthToken(String secret) {
@@ -33,7 +35,9 @@ public class AuthToken {
         var roles = new ArrayList<UserRole>();
         roles.add(UserRole.GUEST);
 
-        return buildToken(null, roles);
+        var id = generateGuestId();
+
+        return buildToken(id, roles);
     }
 
     public AuthTokenDTO create(User user) {
@@ -49,11 +53,8 @@ public class AuthToken {
                 .withIssuer(ISSUER)
                 .withIssuedAt(now)
                 .withExpiresAt(expiresAt)
+                .withClaim("id", id)
                 .withClaim("roles", roles.stream().map(Enum::name).toList());
-
-        if (id != null) {
-            builder.withClaim("id", id);
-        }
 
         var  accessToken = builder.sign(getAlgorithm());
 
@@ -78,26 +79,20 @@ public class AuthToken {
 
     private UserDTO buildUserDTOFromJWT(DecodedJWT jwt) {
         var roles = jwt.getClaim("roles")
-                .asList(String.class)
-                .stream()
-                .map(UserRole::valueOf)
-                .toList();
+                        .asList(String.class)
+                        .stream()
+                        .map(UserRole::valueOf)
+                        .toList();
+
+        var id = jwt.getClaim("id").asString();
 
         return new UserDTO(
-                getUserId(jwt),
+                id,
                 null,
                 null,
                 null,
                 roles
         );
-    }
-
-    private String getUserId(DecodedJWT jtw) {
-        var claims = jtw.getClaims();
-        if (claims.containsKey("id") && claims.get("id") != null) {
-            return claims.get("id").asString();
-        }
-        return null;
     }
 
     private Instant getCurrentDate() {
@@ -109,4 +104,9 @@ public class AuthToken {
     }
 
     private Long getTokenDurationInSeconds() { return TOKEN_DURATION_MINUTES * 60L; }
+
+    private String generateGuestId() {
+        var id = UserRole.GUEST.name()+"-"+UUID.randomUUID();
+        return id.toUpperCase();
+    }
 }
