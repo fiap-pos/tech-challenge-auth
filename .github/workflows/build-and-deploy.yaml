@@ -1,0 +1,14 @@
+name: 'Build and Deploy Application'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-image:
+    name: Build and Deploy Application Image
+    uses: ./.github/workflows/build-image.yaml
+    secrets: inherit
+
+# Chamar workflow para login na AWS e deploy no kubernetes 
