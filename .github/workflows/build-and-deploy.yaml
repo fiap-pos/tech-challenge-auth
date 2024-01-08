@@ -4,11 +4,15 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build-image:
     name: Build and Deploy Application Image
     uses: ./.github/workflows/build-image.yaml
     secrets: inherit
-
-# Chamar workflow para login na AWS e deploy no kubernetes 
+  deploy-to-eks:
+    name: Deploy Application to EKS
+    needs: build-image
+    uses: ./.github/workflows/deploy-to-eks.yaml
+    secrets: inherit
