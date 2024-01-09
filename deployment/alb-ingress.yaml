@@ -3,14 +3,14 @@ kind: Ingress
 metadata:
   name: auth-ingress
   annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/target-type: ip
 spec:
   ingressClassName: alb
   rules:
     - http:
         paths:
-        - path: /auth
+        - path: /
           pathType: Prefix
           backend:
             service:
