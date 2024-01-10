@@ -23,4 +23,4 @@ jobs:
       - name: Deploy to EKS
         run: |
           kubectl apply -f deployment/
-          kubectl get svc auth-service
+          kubectl get svc nlb-auth-service
