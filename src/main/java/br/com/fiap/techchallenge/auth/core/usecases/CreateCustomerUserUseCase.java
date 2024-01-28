@@ -40,7 +40,7 @@ public class CreateCustomerUserUseCase implements CreateCustomerUserInputPort {
 
     private void validateUsername(UserDTO userDTO) {
         try {
-            var existingUser = getUserOutputPort.getByUsername(userDTO.username());
+            getUserOutputPort.getByUsername(userDTO.username());
             throw new EntityAlreadyExistException("Já existe um usuário com o username informado");
         } catch(EntityNotFoundException ignored) {
 
