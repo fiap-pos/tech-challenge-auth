@@ -100,6 +100,11 @@
 								</configuration>
 							</execution>
 						</executions>
+						<configuration>
+							<excludes>
+								<exclude>**/auth/config/*</exclude>
+							</excludes>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
