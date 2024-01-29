@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Tag(name = "Customers", description = "APIs para gerenciamento dos clientes que irão se autenticar")
 @RestController
@@ -26,7 +26,7 @@ public class CustomerController {
     public ResponseEntity<UserResponse> create(@Valid @RequestBody CreateCustomerRequest request) {
 
         var user = createCustomerUserInputPort.create(request.toCreateCustomerDTO());
-        var uri =  ServletUriComponentsBuilder.fromPath("/users/{id}")
+        var uri = UriComponentsBuilder.fromPath("/users/{id}")
                         .buildAndExpand(user.id())
                         .toUri();
 

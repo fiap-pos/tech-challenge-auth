@@ -13,7 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 
-public class GetUserUseCaseTest {
+class GetUserUseCaseTest {
 
     private GetUserUseCase getUserUseCase;
 

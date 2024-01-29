@@ -2,8 +2,6 @@ package br.com.fiap.techchallenge.auth.adapters.web;
 
 import br.com.fiap.techchallenge.auth.adapters.web.models.requests.UpdateUserRequest;
 import br.com.fiap.techchallenge.auth.adapters.web.models.responses.UserResponse;
-import br.com.fiap.techchallenge.auth.core.domain.entities.User;
-import br.com.fiap.techchallenge.auth.core.dtos.UserDTO;
 import br.com.fiap.techchallenge.auth.core.ports.in.GetUserInputPort;
 import br.com.fiap.techchallenge.auth.core.ports.in.UpdateCurrentUserInputPort;
 import io.swagger.v3.oas.annotations.Operation;

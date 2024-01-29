@@ -20,8 +20,7 @@ import static br.com.fiap.techchallenge.auth.Helpers.getUser;
 import static br.com.fiap.techchallenge.auth.Helpers.getUserDTO;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
-
-public class AuthenticateUseCaseTest {
+class AuthenticateUseCaseTest {
 
     private final String authSecret = "signingKey";
 
