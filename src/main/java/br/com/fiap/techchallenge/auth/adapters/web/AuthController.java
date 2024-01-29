@@ -4,7 +4,6 @@ import br.com.fiap.techchallenge.auth.adapters.web.models.requests.AuthenticateC
 import br.com.fiap.techchallenge.auth.adapters.web.models.responses.TokenResponse;
 import br.com.fiap.techchallenge.auth.adapters.web.models.responses.UserResponse;
 import br.com.fiap.techchallenge.auth.core.ports.in.AuthInputPort;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -41,7 +40,7 @@ public class AuthController {
     @GetMapping("/info")
     @Operation(summary = "Retorna as informações do usuário logado se o token for válido")
     @SecurityRequirement(name = "Bearer Authentication")
-    public ResponseEntity<UserResponse> authenticate(@Parameter(hidden = true) @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<UserResponse> info(@Parameter(hidden = true) @RequestHeader(name = "Authorization") String token) {
         var userDTO = authInputPort.getUserByToken(token);
         return ResponseEntity.ok(new UserResponse(userDTO));
     }

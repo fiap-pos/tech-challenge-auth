@@ -1,10 +1,8 @@
 package br.com.fiap.techchallenge.auth.adapters.web.models.requests;
 
-import br.com.fiap.techchallenge.auth.core.dtos.CreateCustomerDTO;
 import br.com.fiap.techchallenge.auth.core.dtos.UpdateUserDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.br.CPF;
 
 public class UpdateUserRequest {
     private String name;
