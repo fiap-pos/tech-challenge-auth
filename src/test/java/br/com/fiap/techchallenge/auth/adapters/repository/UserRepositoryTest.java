@@ -114,5 +114,19 @@ class UserRepositoryTest {
         assertThat(updatedUser).isNotNull().isEqualTo(userDTO);
     }
 
+    @Test
+    void shouldUpdateCompleteUser() {
+        var user = getMongoUser();
+        var userDTO = getUserDTO();
+
+        when(userMongoRepository.findById(userDTO.id())).thenReturn(Optional.of(user));
+        when(userMapper.toUserDTO(user)).thenReturn(userDTO);
+        when(userMongoRepository.save(user)).thenReturn(user);
+
+        var updatedUser = userRepository.update(userDTO.id(), userDTO);
+
+        assertThat(updatedUser).isNotNull().isEqualTo(userDTO);
+    }
+
 
 }

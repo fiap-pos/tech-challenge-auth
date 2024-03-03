@@ -54,6 +54,21 @@ public class UserRepository implements CreateUserOutputPort, GetUserOutputPort, 
         return userMapper.toUserDTO(updatedUser);
     }
 
+    @Override
+    public UserDTO update(String id, UserDTO userDTO) {
+        var user = findById(id);
+
+        user.setName(userDTO.name());
+        user.setUsername(userDTO.username());
+        user.setEmail(userDTO.email());
+        user.setActive(userDTO.active());
+        user.setRoles(userDTO.roles());
+
+        var updatedUser = userMongoRepository.save(user);
+
+        return userMapper.toUserDTO(updatedUser);
+    }
+
     private User findById(String id) {
         return userMongoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuário com id "+id+" não encontrado."));
     }
