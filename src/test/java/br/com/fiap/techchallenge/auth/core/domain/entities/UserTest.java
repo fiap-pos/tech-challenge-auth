@@ -12,11 +12,12 @@ class UserTest {
 
     @Test
     void shouldReturnUser() {
-        User user = new User("id", "name", "username", "email", List.of(UserRole.GUEST));
+        User user = new User("id", "name", "username", "email", true, List.of(UserRole.GUEST));
         assertEquals("id", user.getId());
         assertEquals("name", user.getName());
         assertEquals("username", user.getUsername());
         assertEquals("email", user.getEmail());
+        assertEquals(true, user.isActive());
         assertEquals(List.of(UserRole.GUEST), user.getRoles());
     }
 }

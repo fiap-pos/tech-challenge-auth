@@ -13,6 +13,18 @@ public class Helpers {
                 "user-name",
                 "user-username",
                 "user-email",
+                true,
+                List.of(UserRole.CUSTOMER)
+        );
+    }
+
+    public static UserDTO getInactiveUserDTO() {
+        return new UserDTO(
+                "user-id",
+                "user-name",
+                "user-username",
+                "user-email",
+                false,
                 List.of(UserRole.CUSTOMER)
         );
     }
@@ -23,6 +35,7 @@ public class Helpers {
                 "user-name",
                 "user-username",
                 "user-email",
+                true,
                 List.of(UserRole.CUSTOMER)
         );
     }

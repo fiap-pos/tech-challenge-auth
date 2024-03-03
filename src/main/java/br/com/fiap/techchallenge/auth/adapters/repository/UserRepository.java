@@ -14,9 +14,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserRepository implements CreateUserOutputPort, GetUserOutputPort, UpdateUserOutputPort {
 
-    private UserMongoRepository userMongoRepository;
+    private final UserMongoRepository userMongoRepository;
 
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     public UserRepository(UserMongoRepository userMongoRepository, UserMapper userMapper) {
         this.userMongoRepository = userMongoRepository;

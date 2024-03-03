@@ -91,6 +91,7 @@ public class AuthToken {
                 null,
                 null,
                 null,
+                null,
                 roles
         );
     }
