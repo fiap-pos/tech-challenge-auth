@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
 
-
     @Test
     void shouldReturnUser() {
         User user = new User("id", "name", "username", "email", true, List.of(UserRole.GUEST));
