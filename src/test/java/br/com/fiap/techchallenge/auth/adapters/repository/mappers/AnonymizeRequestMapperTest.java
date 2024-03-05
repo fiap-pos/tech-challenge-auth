@@ -11,7 +11,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class AnonymizeRequestMapperTest {
 
     @Test
-    public void testToDTO() {
+    void testToDTO() {
         var anonymizeRequestMapper = new AnonymizeRequestMapper();
         var anonymizeRequest = new AnonymizeRequest("name", "phone", "address", LocalDateTime.now());
         var result = anonymizeRequestMapper.toDTO(anonymizeRequest);
@@ -23,7 +23,7 @@ class AnonymizeRequestMapperTest {
     }
 
     @Test
-    public void testToEntity() {
+    void testToEntity() {
         var anonymizeRequestMapper = new AnonymizeRequestMapper();
         var anonymizeRequestDTO = new AnonymizeRequestDTO("name", "phone", "address", LocalDateTime.now());
         var result = anonymizeRequestMapper.toEntity(anonymizeRequestDTO);

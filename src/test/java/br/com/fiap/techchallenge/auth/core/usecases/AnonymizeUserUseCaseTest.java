@@ -51,7 +51,7 @@ class AnonymizeUserUseCaseTest {
     }
 
     @Test
-    public void shouldAnonymize() {
+    void shouldAnonymize() {
 
         var userID = "user-id";
 
