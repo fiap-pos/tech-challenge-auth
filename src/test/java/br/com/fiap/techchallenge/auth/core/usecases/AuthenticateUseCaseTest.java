@@ -4,6 +4,7 @@ package br.com.fiap.techchallenge.auth.core.usecases;
 import br.com.fiap.techchallenge.auth.core.domain.entities.AuthToken;
 import br.com.fiap.techchallenge.auth.core.domain.entities.enums.TokenType;
 import br.com.fiap.techchallenge.auth.core.domain.entities.enums.UserRole;
+import br.com.fiap.techchallenge.auth.core.domain.exceptions.UnauthorizedException;
 import br.com.fiap.techchallenge.auth.core.dtos.AuthCustomerDTO;
 import br.com.fiap.techchallenge.auth.core.dtos.AuthTokenDTO;
 import br.com.fiap.techchallenge.auth.core.dtos.UserDTO;
@@ -16,9 +17,9 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static br.com.fiap.techchallenge.auth.Helpers.getUser;
-import static br.com.fiap.techchallenge.auth.Helpers.getUserDTO;
+import static br.com.fiap.techchallenge.auth.Helpers.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 class AuthenticateUseCaseTest {
 
@@ -61,6 +62,22 @@ class AuthenticateUseCaseTest {
         assertThat(tokenDTO.tokenType()).isNotNull();
         assertThat(tokenDTO.tokenType()).isEqualTo(TokenType.BEARER);
     }
+
+    @Test
+    void shouldThrowUnauthorizedExceptionWhenAuthenticateCustomerWithInactiveUser() {
+        var authDTO = new AuthCustomerDTO("username");
+        var userDTO = getInactiveUserDTO();
+
+        when(getUserOutputPort.getByUsername(authDTO.username())).thenReturn(userDTO);
+
+        var exception = assertThrows(UnauthorizedException.class, () -> {
+            authenticateUseCase.authenticateCustomer(authDTO);
+        });
+
+        assertThat(exception).isNotNull().isInstanceOf(UnauthorizedException.class);
+        assertThat(exception.getMessage()).isEqualTo("Usuário inativo.");
+    }
+
 
     @Test
     void shouldAuthenticateGuestUser() {

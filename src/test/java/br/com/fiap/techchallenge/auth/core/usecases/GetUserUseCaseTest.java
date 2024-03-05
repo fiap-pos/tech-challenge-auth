@@ -48,6 +48,7 @@ class GetUserUseCaseTest {
         assertThat(userFound.name()).isEqualTo(user.name());
         assertThat(userFound.username()).isEqualTo(user.username());
         assertThat(userFound.email()).isEqualTo(user.email());
+        assertThat(userFound.active()).isEqualTo(user.active());
         assertThat(userFound.roles()).isEqualTo(user.roles());
 
         verify(getUserOutputPort, times(1)).getById(user.id());
@@ -60,6 +61,7 @@ class GetUserUseCaseTest {
                 "user-name",
                 "user-username",
                 "user-email",
+                true,
                 List.of(UserRole.CUSTOMER)
         );
     }

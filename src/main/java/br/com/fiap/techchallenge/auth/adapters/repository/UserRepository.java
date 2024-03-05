@@ -14,9 +14,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserRepository implements CreateUserOutputPort, GetUserOutputPort, UpdateUserOutputPort {
 
-    private UserMongoRepository userMongoRepository;
+    private final UserMongoRepository userMongoRepository;
 
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     public UserRepository(UserMongoRepository userMongoRepository, UserMapper userMapper) {
         this.userMongoRepository = userMongoRepository;
@@ -48,6 +48,21 @@ public class UserRepository implements CreateUserOutputPort, GetUserOutputPort, 
 
         user.setName(userDTO.name());
         user.setEmail(userDTO.email());
+
+        var updatedUser = userMongoRepository.save(user);
+
+        return userMapper.toUserDTO(updatedUser);
+    }
+
+    @Override
+    public UserDTO update(String id, UserDTO userDTO) {
+        var user = findById(id);
+
+        user.setName(userDTO.name());
+        user.setUsername(userDTO.username());
+        user.setEmail(userDTO.email());
+        user.setActive(userDTO.active());
+        user.setRoles(userDTO.roles());
 
         var updatedUser = userMongoRepository.save(user);
 

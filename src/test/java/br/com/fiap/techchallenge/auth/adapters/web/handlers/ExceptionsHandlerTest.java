@@ -1,9 +1,6 @@
 package br.com.fiap.techchallenge.auth.adapters.web.handlers;
 
-import br.com.fiap.techchallenge.auth.core.domain.exceptions.AuthenticationTokenInvalidException;
-import br.com.fiap.techchallenge.auth.core.domain.exceptions.BadRequestException;
-import br.com.fiap.techchallenge.auth.core.domain.exceptions.EntityAlreadyExistException;
-import br.com.fiap.techchallenge.auth.core.domain.exceptions.EntityNotFoundException;
+import br.com.fiap.techchallenge.auth.core.domain.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpInputMessage;
@@ -102,6 +99,19 @@ class ExceptionsHandlerTest {
         assertThat(response.getBody()).isNotNull().isInstanceOf(ErrorDetails.class);
         assertThat(response.getBody().message()).isEqualTo("Requisição inválida.");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void shouldHandleUnauthorizedException() {
+        var exception = new UnauthorizedException("message");
+        var httpservletRequest = new MockHttpServletRequest();
+
+        var response = exceptionsHandler.handlerUnauthorizedException(exception, httpservletRequest);
+
+        assertThat(response).isNotNull().isInstanceOf(ResponseEntity.class);
+        assertThat(response.getBody()).isNotNull().isInstanceOf(ErrorDetails.class);
+        assertThat(response.getBody().message()).isEqualTo(exception.getMessage());
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
 }

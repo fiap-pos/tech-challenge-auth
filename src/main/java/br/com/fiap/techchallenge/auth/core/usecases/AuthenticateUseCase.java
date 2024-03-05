@@ -3,6 +3,7 @@ package br.com.fiap.techchallenge.auth.core.usecases;
 import br.com.fiap.techchallenge.auth.core.domain.entities.AuthToken;
 import br.com.fiap.techchallenge.auth.core.domain.entities.User;
 import br.com.fiap.techchallenge.auth.core.domain.entities.enums.UserRole;
+import br.com.fiap.techchallenge.auth.core.domain.exceptions.UnauthorizedException;
 import br.com.fiap.techchallenge.auth.core.dtos.AuthCustomerDTO;
 import br.com.fiap.techchallenge.auth.core.dtos.AuthTokenDTO;
 import br.com.fiap.techchallenge.auth.core.dtos.UserDTO;
@@ -20,15 +21,22 @@ public class AuthenticateUseCase implements AuthInputPort {
     }
 
     @Override
-    public AuthTokenDTO authenticateCustomer(AuthCustomerDTO authDTO) {
+    public AuthTokenDTO authenticateCustomer(AuthCustomerDTO authDTO) throws UnauthorizedException {
         var userDTO = getUserOutputPort.getByUsername(authDTO.username());
+
         var user = new User(
                 userDTO.id(),
                 userDTO.name(),
                 userDTO.username(),
                 userDTO.email(),
+                userDTO.active(),
                 userDTO.roles()
         );
+
+        if (Boolean.FALSE.equals(user.isActive())) {
+            throw new UnauthorizedException("Usuário inativo.");
+        }
+
         return authToken.create(user);
     }
 

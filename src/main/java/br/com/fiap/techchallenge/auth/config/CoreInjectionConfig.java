@@ -1,16 +1,11 @@
 package br.com.fiap.techchallenge.auth.config;
 
-import br.com.fiap.techchallenge.auth.core.ports.in.AuthInputPort;
-import br.com.fiap.techchallenge.auth.core.ports.in.CreateCustomerUserInputPort;
-import br.com.fiap.techchallenge.auth.core.ports.in.GetUserInputPort;
-import br.com.fiap.techchallenge.auth.core.ports.in.UpdateCurrentUserInputPort;
+import br.com.fiap.techchallenge.auth.core.ports.in.*;
+import br.com.fiap.techchallenge.auth.core.ports.out.CreateAnonymizeRequestOutputPort;
 import br.com.fiap.techchallenge.auth.core.ports.out.CreateUserOutputPort;
 import br.com.fiap.techchallenge.auth.core.ports.out.GetUserOutputPort;
 import br.com.fiap.techchallenge.auth.core.ports.out.UpdateUserOutputPort;
-import br.com.fiap.techchallenge.auth.core.usecases.AuthenticateUseCase;
-import br.com.fiap.techchallenge.auth.core.usecases.CreateCustomerUserUseCase;
-import br.com.fiap.techchallenge.auth.core.usecases.GetUserUseCase;
-import br.com.fiap.techchallenge.auth.core.usecases.UpdateCurrentUserUseCase;
+import br.com.fiap.techchallenge.auth.core.usecases.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,5 +34,14 @@ public class CoreInjectionConfig {
     @Bean
     UpdateCurrentUserInputPort updateUser(UpdateUserOutputPort updateUserOutputPort) {
         return new UpdateCurrentUserUseCase(updateUserOutputPort, authSecret);
+    }
+
+    @Bean
+    AnonymizeUserInputPort anonimizeData(
+            GetUserOutputPort getUserOutputPort,
+            UpdateUserOutputPort updateUserOutputPort,
+            CreateAnonymizeRequestOutputPort createAnonymizeRequestOutputPort
+    ) {
+        return new AnonymizeUserUseCase(getUserOutputPort, updateUserOutputPort, createAnonymizeRequestOutputPort);
     }
 }

@@ -79,6 +79,7 @@ class UpdateCurrentUserUseCaseTest {
                 "user-name",
                 "user-username",
                 "user-email",
+                true,
                 List.of(UserRole.CUSTOMER)
         );
     }
