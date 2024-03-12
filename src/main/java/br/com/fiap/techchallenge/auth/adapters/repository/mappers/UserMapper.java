@@ -11,6 +11,7 @@ public class UserMapper {
             dto.username(),
             dto.name(),
             dto.email(),
+            dto.active(),
             dto.roles()
         );
     }
@@ -21,6 +22,7 @@ public class UserMapper {
             user.getName(),
             user.getUsername(),
             user.getEmail(),
+            user.getActive(),
             user.getRoles()
         );
     }

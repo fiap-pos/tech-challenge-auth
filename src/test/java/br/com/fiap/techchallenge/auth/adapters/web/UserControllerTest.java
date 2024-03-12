@@ -1,7 +1,9 @@
 package br.com.fiap.techchallenge.auth.adapters.web;
 
+import br.com.fiap.techchallenge.auth.adapters.web.models.requests.AnonymizeUserRequest;
 import br.com.fiap.techchallenge.auth.adapters.web.models.requests.UpdateUserRequest;
 import br.com.fiap.techchallenge.auth.adapters.web.models.responses.UserResponse;
+import br.com.fiap.techchallenge.auth.core.ports.in.AnonymizeUserInputPort;
 import br.com.fiap.techchallenge.auth.core.ports.in.GetUserInputPort;
 import br.com.fiap.techchallenge.auth.core.ports.in.UpdateCurrentUserInputPort;
 import org.junit.jupiter.api.AfterEach;
@@ -25,12 +27,15 @@ class UserControllerTest {
     @Mock
     private UpdateCurrentUserInputPort updateCurrentUserInputPort;
 
+    @Mock
+    private AnonymizeUserInputPort anonymizeUserInputPort;
+
     private UserController userController;
 
     @BeforeEach
     void setUp() {
         mock = MockitoAnnotations.openMocks(this);
-        userController = new UserController(getUserInputPort, updateCurrentUserInputPort);
+        userController = new UserController(getUserInputPort, updateCurrentUserInputPort, anonymizeUserInputPort);
     }
 
     @AfterEach
@@ -69,6 +74,29 @@ class UserControllerTest {
         when(updateCurrentUserInputPort.update("token", request.toUpdateUserDTO())).thenReturn(userDTO);
 
         var response = userController.update(request, "token");
+        var userResponse = response.getBody();
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(userResponse).isNotNull().isInstanceOf(UserResponse.class);
+        assertThat(userResponse.getId()).isEqualTo(userDTO.id());
+        assertThat(userResponse.getName()).isEqualTo(userDTO.name());
+        assertThat(userResponse.getEmail()).isEqualTo(userDTO.email());
+        assertThat(userResponse.getUsername()).isEqualTo(userDTO.username());
+    }
+
+    @Test
+    void shouldAnonymizeCurrentUser() {
+        var userDTO = getUserDTO();
+        var request = new AnonymizeUserRequest(
+                "username",
+                "11999999999",
+                "User full address"
+        );
+
+        when(anonymizeUserInputPort.anonymize(userDTO.id(), request.toCreateAnonymizeRequestDTO())).thenReturn(userDTO);
+
+        var response = userController.anonymize(request, userDTO.id());
+
         var userResponse = response.getBody();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

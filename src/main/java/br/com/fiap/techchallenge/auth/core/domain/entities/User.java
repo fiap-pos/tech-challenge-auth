@@ -9,21 +9,24 @@ public class User {
     private String name;
     private String username;
     private String email;
+    private Boolean active;
 
     private List<UserRole> roles;
 
-    public User(String name, String username, String email, List<UserRole> roles) {
+    public User(String name, String username, String email, Boolean active, List<UserRole> roles) {
         this.name = name;
         this.username = username;
         this.email = email;
+        this.active = active;
         this.roles = roles;
     }
 
-    public User(String id, String name, String username, String email, List<UserRole> roles) {
+    public User(String id, String name, String username, String email, Boolean active, List<UserRole> roles) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
+        this.active = active;
         this.roles = roles;
     }
 
@@ -57,5 +60,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Boolean isActive() {
+        return active;
     }
 }

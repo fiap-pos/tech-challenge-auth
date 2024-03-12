@@ -1,9 +1,6 @@
 package br.com.fiap.techchallenge.auth.adapters.web.handlers;
 
-import br.com.fiap.techchallenge.auth.core.domain.exceptions.BadRequestException;
-import br.com.fiap.techchallenge.auth.core.domain.exceptions.EntityAlreadyExistException;
-import br.com.fiap.techchallenge.auth.core.domain.exceptions.EntityNotFoundException;
-import br.com.fiap.techchallenge.auth.core.domain.exceptions.AuthenticationTokenInvalidException;
+import br.com.fiap.techchallenge.auth.core.domain.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,7 +90,17 @@ public class ExceptionsHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDetails);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ErrorDetails> handlerUnauthorizedException(UnauthorizedException e, HttpServletRequest request) {
+        var errorDetails = new ErrorDetails.Builder()
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .message(e.getMessage())
+                .timestamp(System.currentTimeMillis())
+                .build();
 
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDetails);
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

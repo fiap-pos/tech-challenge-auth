@@ -20,12 +20,16 @@ public class User {
     private String email;
 
     @Indexed
+    private Boolean active;
+
+    @Indexed
     private List<UserRole> roles;
 
-    public User(String username, String name, String email, List<UserRole> roles) {
+    public User(String username, String name, String email, Boolean active, List<UserRole> roles) {
         this.username = username;
         this.name = name;
         this.email = email;
+        this.active = active;
         this.roles = roles;
     }
 
@@ -55,6 +59,17 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Boolean getActive() {
+        if (active == null) {
+            return true;
+        }
+        return active;
     }
 
     public List<UserRole> getRoles() {

@@ -54,6 +54,7 @@ class CreateCustomerUserUseCaseTest {
                 customerDTO.name(),
                 customerDTO.username(),
                 customerDTO.email(),
+                true,
                 List.of(UserRole.CUSTOMER)
         );
 
@@ -79,6 +80,7 @@ class CreateCustomerUserUseCaseTest {
                 customerDTO.name(),
                 customerDTO.username(),
                 customerDTO.email(),
+                true,
                 List.of(UserRole.CUSTOMER)
         );
 

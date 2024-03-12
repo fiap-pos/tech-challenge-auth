@@ -26,6 +26,7 @@ public class CreateCustomerUserUseCase implements CreateCustomerUserInputPort {
             customerIn.name(),
             customerIn.username(),
             customerIn.email(),
+            true,
             getCustomerRoles()
         );
         validateUsername(userDTO);
